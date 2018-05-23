@@ -1,0 +1,16 @@
+{
+  "presets": ["node8-es6", "react", "stage-0"] 
+  // "presets": [
+  //   [
+  //     "env",
+  //     {
+  //       "targets": {
+  //         "electron": [
+  //           "1.7.6"
+  //         ]
+  //       }
+  //     },
+  //     "react"
+  //   ]
+  // ]
+}

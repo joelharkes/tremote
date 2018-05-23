@@ -1,0 +1,30 @@
+@import "reset.scss";
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+#console {
+    font-family: 'Source Code Pro', monospace;
+    background: #040404;
+    color: #07e30d;
+    font-size: 12px;
+    height: 300px;
+    overflow: auto;
+}
+#console .level-debug {
+    color: #BBB;
+}
+#console .level-info {
+    color: #EEE;
+}
+
+
+#console .level-error {
+    color: red;
+}
+#console .level-warn {
+    color:  yellow;
+}

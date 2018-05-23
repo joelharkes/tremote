@@ -1,0 +1,83 @@
+{
+  "name": "tremote",
+  "author": "Joel Harkes",
+  "version": "1.2.1",
+  "description": "Forwarding tool for remote connections",
+  "main": "output/index.js",
+  "scripts": {
+    "start": "concurrently \"yarn start-main\"  \"yarn start-web\"",
+    "start-main": "electron --enable-logging -r ts-node/register ./src/main/index.ts",
+    "start-web": "webpack-dev-server --config=webpack/dev.js --env.NODE_ENV=production --env.production",
+    "build-main": "webpack --env.NODE_ENV=production --env.production",
+    "build-web": "webpack --config=webpack/prod.js",
+    "build": "concurrently \"yarn build-web\" \"yarn build-main\"",
+    "package": "electron-builder",
+    "no-pack": "electron-builder --dir -c.compression=store",
+    "prod": "yarn build && yarn no-pack && dist/win-unpacked/tremote.exe",
+    "dist": "yarn compile && electron-builder --dir"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "@types/fs-extra": "^5.0.2",
+    "@types/material-ui": "^0.20.8",
+    "@types/winston": "^2.3.9",
+    "fs-extra": "^6.0.0",
+    "material-ui": "^0.20.1",
+    "mobx": "^4.2.1",
+    "mobx-react": "^5.1.2",
+    "node-fetch": "^2.1.2",
+    "open": "^0.0.5",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "winreg": "^1.2.4",
+    "winston": "^3.0.0-rc5"
+  },
+  "devDependencies": {
+    "@types/react": "^16.0.19",
+    "@types/react-dom": "^16.0.2",
+    "autoprefixer": "^8.4.1",
+    "awesome-typescript-loader": "5.0.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-node8-es6": "^12.0.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "cache-loader": "^1.1.0",
+    "css-loader": "^0.28.7",
+    "cssnano": "^3.10.0",
+    "electron": "^2.0.0",
+    "electron-builder": "^20.11.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.5.3",
+    "postcss-cssnext": "^3.0.2",
+    "postcss-import": "^11.0.0",
+    "postcss-loader": "^2.0.8",
+    "precss": "^3.1.2",
+    "sass-loader": "^7.0.1",
+    "source-map-loader": "^0.2.3",
+    "source-map-support": "^0.5.0",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.2.0",
+    "ts-node": "^6.0.2",
+    "tslint": "^5.8.0",
+    "tslint-react": "^3.2.0",
+    "typescript": "^2.6.1",
+    "webpack": "^4.7.0",
+    "webpack-cli": "^2.1.2",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.1.2"
+  },
+  "build": {
+    "appId": "t.rancon",
+    "mac": {
+      "category": "test.jo"
+    },
+    "icon": "icon.ico"
+  },
+  "files": [
+    "output/*"
+  ]
+}
