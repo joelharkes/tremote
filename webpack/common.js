@@ -28,24 +28,13 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', { loader: 'css-loader', options: { importLoaders: 1 } }, 'postcss-loader',],
+        use: ['style-loader', { loader: 'css-loader', options: { importLoaders: 1 } },],
       },
       {
         test: /\.scss$/,
         loaders: [
           'style-loader',
           { loader: 'css-loader', options: { importLoaders: 1 } },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: function () { // post css plugins, can be exported to postcss.config.js
-                // return [
-                //   require('precss'),
-                //   require('autoprefixer')
-                // ];
-              }
-            }
-          },
           'sass-loader',
         ],
       },
