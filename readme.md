@@ -13,6 +13,13 @@ Tremote will handle this magnet link and start the right application on your com
 1. Run development: `yarn start` (`yarn start-web` if you want to debug main process)
 1. Run production: `yarn prod`
 
+## Deploy/release/package
+
+Run the `electron-builder` with `yarn pack` and wait until its finished (+-30sec).
+It will build with the version found in the `package.json`. 
+
+When finished you will find your executable in the `/dist` directory (eg: `tremote Setup 1.3.0.exe`).
+
 
 ## Contributions
 
