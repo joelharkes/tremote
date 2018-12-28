@@ -2,40 +2,54 @@ import * as React from "react";
 import { StartPage } from "./start-page";
 import { inject, observer, IReactComponent } from "mobx-react";
 import { Store, Stores } from "./store";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import AppBar from "material-ui/AppBar";
-import Drawer from "material-ui/Drawer";
-import { List, ListItem } from "material-ui";
 import { SettingsPage } from "./settings-page";
-import { getMuiTheme } from "material-ui/styles";
 import { muiTheme } from "./theme";
 import { LogPage } from "./log-page";
 import { OpenVpnView } from "./openvpn-view";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { MuiThemeProvider, AppBar, Drawer, List, Toolbar, IconButton, Typography, withStyles, ListItem, ListItemText } from "@material-ui/core";
+
+import MenuIcon from "@material-ui/icons/Menu";
+import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+
 interface Props {
     store?: Store;
+    classes: ClassNameMap<string>;
 }
 interface State {
 }
 
 var PAGES = { StartPage, /* CiscVpnPage, WindowsVpnPage */ };
 
-var drawerSize = 160;
+var drawerSize = 180;
+
+var styles = {};
 @inject("store")
 @observer
-export class App extends React.Component<Props, State> {
+
+class AppIntern extends React.Component<Props, State> {
     get store(): Store {
         return this.props.store as Store;
     }
     render() {
+        var { classes } = this.props;
         return (
-            <MuiThemeProvider muiTheme={muiTheme}>
+            <MuiThemeProvider theme={muiTheme}>
+                <CssBaseline />
                 <div className="app" style={{ marginLeft: drawerSize }}>
-                    <AppBar title="Tremote"
-                        onLeftIconButtonClick={this.store.toggleDrawer}
-
-                    />
-                    <Drawer docked={true} onRequestChange={this.store.toggleDrawer} width={drawerSize}>
-                        <List>
+                    <AppBar title="Tremote" position="static">
+                        <Toolbar>
+                            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.store.toggleDrawer}>
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="title" color="inherit" className={classes.flex}>
+                                Tremote
+                            </Typography>
+                            {/* <Button color="inherit">Login</Button> */}
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer variant="permanent" onClose={this.store.toggleDrawer}>
+                        <List  style={{width: drawerSize}}>
                             <NavItemMobx text="Dashboard" component={StartPage} />
                             <NavItemMobx text="Settings" component={SettingsPage} />
                             <NavItemMobx text="Log" component={LogPage} />
@@ -52,6 +66,8 @@ export class App extends React.Component<Props, State> {
     }
 }
 
+export const App = withStyles(styles)(AppIntern);
+
 interface NavPropsSimple {
     text: string;
     component: React.ClassType<{}, any, any>;
@@ -67,7 +83,12 @@ export class NavItem extends React.Component<NavProps> {
     render() {
         var { text, active } = this.props;
         return (
-            <ListItem primaryText={text} onClick={this.onClick} style={{ color: active && muiTheme.palette ? muiTheme.palette.accent1Color : undefined }} />
+            <ListItem button onClick={this.onClick}
+             style={{ color: active && muiTheme.palette ? muiTheme.palette.common.black : undefined }} >
+             
+             <ListItemText primary={text}  />
+ 
+             </ListItem>
         );
     }
 }

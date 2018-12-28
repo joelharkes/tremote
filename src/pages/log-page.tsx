@@ -2,8 +2,9 @@
 import * as React from "react";
 import { Store } from "./store";
 import { inject, observer } from "mobx-react";
-import { Snackbar, Paper, TextField, RaisedButton, ToolbarGroup, Toolbar, ToolbarTitle, Toggle, FontIcon } from "material-ui";
-import ActionHome from "material-ui/svg-icons/navigation/refresh";
+import { Paper, Toolbar } from "@material-ui/core";
+import ActionHome from "@material-ui/icons/Refresh";
+
 interface Props {
     store?: Store;
 }
@@ -20,17 +21,11 @@ export class LogPage extends React.Component<Props, State> {
         this.store.loadLogs();
     }
     render() {
-        var settings = this.store.settings;
         return (
             <div style={{ padding: 10 }}>
                 <Paper>
-                    <Toolbar>
-                        <ToolbarGroup>
-                            <ToolbarTitle text="Logs" />
-                        </ToolbarGroup >
-                        <ToolbarGroup>
-                            <ActionHome onClick={this.store.loadLogs} />
-                        </ToolbarGroup >
+                    <Toolbar title="Logs">
+                        <ActionHome onClick={this.store.loadLogs} />
 
                     </Toolbar >
                     <div id="console" style={{ padding: 10 }}>

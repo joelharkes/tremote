@@ -5,8 +5,8 @@ import { ProfileSettings, RemoteAppInterface, VpnConnectionInfo, VpnProcessDto, 
 import { createRemoteSender } from "../shared/remoting";
 import { Store } from "./store";
 import { inject, observer } from "mobx-react";
-import { Snackbar, Paper, TextField, RaisedButton, ToolbarGroup, ToolbarTitle, Toolbar, FloatingActionButton } from "material-ui";
-import ContentAdd from "material-ui/svg-icons/content/add";
+import { Paper, TextField, Toolbar, Button } from "@material-ui/core";
+import ContentAdd from "@material-ui/icons/Add";
 import { CiscoVpnWidgetComponent, CiscoVpnWidget } from "./cisco/cisco-widget";
 import { Widget } from "./widget-base";
 import { toJS } from "mobx";
@@ -58,24 +58,21 @@ export class StartPage extends React.Component<Props, State> {
         return (
             <div style={{ padding: 10 }}>
                 <Paper>
-                    <Toolbar>
-                        <ToolbarGroup>
-                            <ToolbarTitle text="Execute manualy" />
-                        </ToolbarGroup >
+                    <Toolbar title="Execute manualy">
                     </Toolbar >
                     <div style={{ padding: 10 }}>
                         Insert your url below and click execute to test your magnet link:<br />
                         <TextField
-                            hintText="Url"
+                            helperText="Url"
                             value={url} onChange={this.changeUrl}
                         />
-                        <RaisedButton label="Execute" primary={true} onClick={this.executeUrl} />
+                        <Button variant="raised" color="primary" onClick={this.executeUrl} >Execute</Button>
                     </div>
                 </Paper>
                 {this.renderWidgets()}
-                <FloatingActionButton style={{ position: "fixed", bottom: 0, right: 0, margin: 20 }} onClick={this.addWidget}>
+                <Button variant="fab" style={{ position: "fixed", bottom: 0, right: 0, margin: 20 }} onClick={this.addWidget}>
                     <ContentAdd />
-                </FloatingActionButton>
+                </Button>
             </div >
         );
     }

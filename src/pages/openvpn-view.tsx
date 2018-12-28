@@ -1,7 +1,7 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { VpnProcessDto, VpnStatus } from "../shared/interfaces";
-import { Snackbar } from "material-ui";
+import { Snackbar, Button } from "@material-ui/core";
 
 @observer
 export class OpenVpnView extends React.Component<{ vpn: VpnProcessDto, ondisconnect(vpn: VpnProcessDto) }> {
@@ -14,9 +14,8 @@ export class OpenVpnView extends React.Component<{ vpn: VpnProcessDto, ondisconn
             <Snackbar
                 open={true}
                 message={<span>{vpn.name} is {this.renderStatus(vpn.status)}</span>}
-                action="disconnect"
-                onActionClick={this.ondisconnect}
-                onRequestClose={(r) => { }}
+                action={<Button color="secondary" size="small" onClick={this.ondisconnect}>disconnect</Button>}
+                onClose={(r) => { }}
             />
         );
     }

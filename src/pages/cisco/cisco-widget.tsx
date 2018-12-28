@@ -1,14 +1,13 @@
-import { Paper, RaisedButton, TextField, Toggle, Toolbar, ToolbarGroup, ToolbarTitle, IconMenu, IconButton, MenuItem } from "material-ui";
-import SvgDelete from "material-ui/svg-icons/action/delete";
-import SvgClear from "material-ui/svg-icons/content/clear";
-import SvgCreate from "material-ui/svg-icons/content/create";
-import NavigationExpandMoreIcon from "material-ui/svg-icons/navigation/expand-more";
+import { Paper, Button, TextField, Switch, Toolbar, Menu, IconButton, MenuItem } from "@material-ui/core";
+import SvgDelete from "@material-ui/icons/Delete";
+import SvgClear from "@material-ui/icons/Clear";
+import SvgCreate from "@material-ui/icons/Create";
+import NavigationExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { inject } from "mobx-react";
 import * as React from "react";
 import { CiscoVpnOptions, createNewOptions } from "../../actions/ciscovpn";
 import { Store } from "../store";
 import { WidgetBase, WidgetComponent, WidgetPropsTyped } from "../widget-base";
-
 
 interface WidgetModel extends CiscoVpnOptions {
     name: string;
@@ -16,6 +15,7 @@ interface WidgetModel extends CiscoVpnOptions {
 
 interface State {
     editMode: boolean;
+    menuOpen: boolean;
 }
 
 export function createNewWidgetModel(): WidgetModel {
@@ -29,33 +29,30 @@ export function createNewWidgetModel(): WidgetModel {
 @inject("store")
 export class CiscoVpnWidgetComponent extends WidgetComponent<WidgetModel, State> {
     state = {
-        editMode: false
+        editMode: false,
+        menuOpen: false,
     };
     get store(): Store {
         return (this.props as any).store;
     }
-
+    toggleMenu =  () => {
+        this.setState((prev) => ({menuOpen: !prev.menuOpen}));
+    }
     render() {
         var { model } = this.props;
         return (
             <Paper style={{ marginTop: 15 }}>
                 <Toolbar>
-                    <ToolbarGroup>
-                        <ToolbarTitle text={model.name} />
-                    </ToolbarGroup >
-                    <ToolbarGroup>
-                        <IconMenu
-                            iconButtonElement={
-                                <IconButton touch={true}>
-                                    <NavigationExpandMoreIcon />
-                                </IconButton>}
-                        >
-                            <MenuItem primaryText={this.state.editMode ? "Stop editing" : "Edit"}
-                                leftIcon={this.state.editMode ? <SvgClear /> : <SvgCreate />}
-                                onClick={this.toggleEditMode} />
-                            <MenuItem primaryText="Delete" leftIcon={<SvgDelete />} onClick={this.props.onRemove} />
-                        </IconMenu>
-                    </ToolbarGroup >
+                {model.name}
+                    <IconButton onClick={this.toggleMenu}>
+                        <NavigationExpandMoreIcon />
+                    </IconButton>
+                    <Menu open={this.state.menuOpen}>
+                        <MenuItem onClick={this.toggleEditMode}>
+                            {this.state.editMode ? <SvgClear /> : <SvgCreate />} {this.state.editMode ? "Stop editing" : "Edit"}
+                        </MenuItem>
+                        <MenuItem onClick={this.props.onRemove} ><SvgDelete />Delete</MenuItem>
+                    </Menu>
                 </Toolbar >
                 <div style={{ padding: 10 }}>
                     {this.state.editMode ? this.renderForm(model) : this.renderWidget()}
@@ -68,7 +65,7 @@ export class CiscoVpnWidgetComponent extends WidgetComponent<WidgetModel, State>
     renderWidget() {
         return (
             <>
-                <RaisedButton primary onClick={this.connect} label="Connect" />
+                <Button variant="contained" onClick={this.connect}>Connect</Button>
                 &nbsp;{this.props.model.user}@{this.props.model.server}
 
             </>
@@ -81,53 +78,49 @@ export class CiscoVpnWidgetComponent extends WidgetComponent<WidgetModel, State>
     renderForm(options: WidgetModel) {
         return (
             <>
-                <TextField type="text" floatingLabelText="Name"
+                <TextField type="text" label="Name"
                     value={options.name}
                     onChange={this.changeName} />
-                <TextField type="text" floatingLabelText="server url/ip"
+                <TextField type="text" label="server url/ip"
                     value={options.server}
                     onChange={this.changeServer} />
                 <br />
-                <TextField type="text" floatingLabelText="username"
+                <TextField type="text" label="username"
                     value={options.user}
                     onChange={this.changeUser} />
                 <br />
-                <TextField type="password" floatingLabelText="password"
+                <TextField type="password" label="password"
                     value={options.password || ""}
                     onChange={this.changePassword} />
                 <br />
-                <Toggle
-                    label="Is it untrusted"
-                    labelPosition="right"
-                    toggled={options.untrusted}
-                    onToggle={this.changeUntrusted}
+                <Switch 
+                    checked={options.untrusted}
+                    onChange={this.changeUntrusted}
                     style={{ marginTop: 14 }}
-                /><br />
+                />Is it untrusted<br />
 
-                <Toggle
-                    label="Is there a Acceptmessage?"
-                    labelPosition="right"
-                    toggled={options.acceptmessage}
-                    onToggle={this.changeAcceptMessage}
+                <Switch
+                    checked={options.acceptmessage}
+                    onChange={this.changeAcceptMessage}
                     style={{ marginTop: 14 }}
-                />
+                />Is there a Acceptmessage?
             </>
         );
     }
     toggleEditMode = () => {
         this.setState(prev => ({ editMode: !prev.editMode }));
     }
-    changeName = (_, newValue: string) => {
-        this.props.onChange({ name: newValue });
+    changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.onChange({ name: event.target.value });
     }
-    changeServer = (_, newValue: string) => {
-        this.props.onChange({ server: newValue });
+    changeServer = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.onChange({ server: event.target.value });
     }
-    changeUser = (_, newValue: string) => {
-        this.props.onChange({ user: newValue });
+    changeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.onChange({ user: event.target.value });
     }
-    changePassword = (_, newValue: string) => {
-        this.props.onChange({ password: newValue });
+    changePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.onChange({ password: event.target.value });
     }
     changeUntrusted = (_, newValue: boolean) => {
         this.props.onChange({ untrusted: newValue });
