@@ -155,6 +155,10 @@ export class RemoteApp implements RemoteAppInterface {
             height: 1080,
             title: "TRemote > start",
             autoHideMenuBar: false,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,
+            }
         });
         logger.info("opening main window startup page");
 
