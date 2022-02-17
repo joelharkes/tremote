@@ -18,8 +18,8 @@ export abstract class VpnProcessBase implements VpnProcess {
         this.info = { status: VpnStatus.Loading, name: "vpn" };
         this.spawnCommand = { command, args, options };
         var proc = cmd.spawn(command, args, options);
-        proc.stdout.on("data", this.addConsoleData);
-        proc.stderr.on("data", this.addConsoleData);
+        proc.stdout?.on("data", this.addConsoleData);
+        proc.stderr?.on("data", this.addConsoleData);
         proc.on("exit", () => {
             this.proc = null;
             this.onProcessClose();

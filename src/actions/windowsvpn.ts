@@ -97,8 +97,8 @@ export class WindowsVpnProcess extends EventEmitter implements VpnProcess {
         this.spawnCommand = { command, args, options };
         var proc = cmd.spawn(command, args, options);
         this.output = [];
-        proc.stdout.on("data", this.addConsoleData);
-        proc.stderr.on("data", this.addConsoleData);
+        proc.stdout?.on("data", this.addConsoleData);
+        proc.stderr?.on("data", this.addConsoleData);
         proc.on("exit", () => {
             this.proc = null;
             this.emit("data", this.output);

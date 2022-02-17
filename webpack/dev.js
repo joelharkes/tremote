@@ -1,5 +1,5 @@
 // development config
-const merge = require('webpack-merge');
+const { merge }= require('webpack-merge');
 const webpack = require('webpack');
 const commonConfig = require('./common');
 const { resolve } = require('path');
@@ -22,7 +22,6 @@ module.exports = merge(commonConfig, {
     port: port,
     historyApiFallback: true,
   },
-  devtool: 'cheap-module-eval-source-map',
   
   externals: {
     'react': 'React',
@@ -32,7 +31,5 @@ module.exports = merge(commonConfig, {
   },
   plugins: [
     new HtmlWebpackPlugin({ template: 'index.dev.html.ejs', }),
-    new webpack.HotModuleReplacementPlugin(), // enable HMR globally
-    new webpack.NamedModulesPlugin(), // prints more readable module names in the browser console on HMR updates
   ],
 });

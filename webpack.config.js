@@ -44,21 +44,10 @@ var config = {
     rules: [
       {
         test: /\.tsx?$/,
-        use:{
-
-          loader: 'awesome-typescript-loader',
-          query: {
-            useCache: true,
-          //  useBabel: true,
-          //    "babelOptions": {
-          //      "babelrc": false, /* Important line */
-          //      "presets": ["electron"]
-          //    },
-            //  "babelCore": "@babel/core", // needed for Babel v7
-          }
-        } 
-        
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
+
     ]
   }
 };

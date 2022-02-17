@@ -64,7 +64,7 @@ export class RemoteResponder<T> {
         this.ipc = require("electron").ipcMain;
         this.responder = responder;
 
-        this.ipc.on(channel, async (event: Electron.IpcMessageEvent, args: RemoteArgs) => {
+        this.ipc.on(channel, async (event: Electron.IpcMainEvent, args: RemoteArgs) => {
             try {
                 var result = this.responder[args.method].apply(this.responder, args.args);
                 if (result instanceof Promise) {

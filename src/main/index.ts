@@ -14,64 +14,30 @@ if ((module as any).hot != null) {
 
 var remoteApp: RemoteApp;
 
-var shouldQuit = app.makeSingleInstance(function (args: string[], cwd: string) {
+let myWindow = null
+    
+const gotTheLock = app.requestSingleInstanceLock()
+    
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, argv, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
-    logger.info(`awake triggered: ${args.join(" ")}`);
-    if (remoteApp && remoteApp.window) {
-        if (remoteApp.window.isMinimized()) {
-            remoteApp.window.restore();
-        }
-        remoteApp.window.focus();
+    if (remoteApp?.window) {
+      if (remoteApp.window.isMinimized()) remoteApp.window.restore()
+      remoteApp.window.focus()
     }
     if (remoteApp) {
-        return remoteApp.main(args);
+        return remoteApp.main(argv);
     }
     logger.error("unexpected situation singleInstance called but no remoteApp created");
-});
-
-if (shouldQuit) {
-    app.quit();
-} else {
-    remoteApp = new RemoteApp();
-    global.app = remoteApp;
-    // remoteApp.executeUrl(urlx);
-    remoteApp.main(process.argv);
+  })
 }
 
-// keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-//let win
-
-// so we respond to tremote://
-
-// function createWindow() {
-//     // Create the browser window.
-//     win = new BrowserWindow({ width: 800, height: 600 })
-//     console.log(process.argv);
-
-//     // and load the index.html of the app.
-//     win.loadURL(url.format({
-//         pathname: path.join(__dirname, 'index.html'),
-//         protocol: 'file:',
-//         slashes: true
-//     }))
-
-//     // Open the DevTools.
-//     win.webContents.openDevTools()
-
-//     // Emitted when the window is closed.
-//     win.on('closed', () => {
-//         // Dereference the window object, usually you would store windows
-//         // in an array if your app supports multi windows, this is the time
-//         // when you should delete the corresponding element.
-//         win = null
-//     })
-// }
-
-// // This method will be called when Electron has finished
-// // initialization and is ready to create browser windows.
-// // Some APIs can only be used after this event occurs.
-// app.on('ready', createWindow)
+remoteApp = new RemoteApp();
+global.app = remoteApp;
+// remoteApp.executeUrl(urlx);
+remoteApp.main(process.argv);
 
 // // Quit when all windows are closed.
 app.on("window-all-closed", () => {

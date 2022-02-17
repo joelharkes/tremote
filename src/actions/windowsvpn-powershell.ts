@@ -8,6 +8,7 @@ import * as EventEmitter from "events";
 import * as os from "os";
 import { WindowsVpnProcess } from "./windowsvpn";
 import { logger } from "../main/logger";
+import SocialDomain from "material-ui/svg-icons/social/domain";
 
 function ucFirst(txt: string) {
     return txt.charAt(0).toUpperCase() + txt.slice(1);
@@ -58,10 +59,8 @@ export class WindowsVpnPowershellAction implements IVpnAction {
         });
     }
     async setConnection(options: WindowsVpnOptions) {
-        var psOptions = { ...options, force: true, splitTunneling: true };
-        delete psOptions.domain;
-        delete psOptions.user;
-        delete psOptions.password;
+        var allOptions = { ...options, force: true, splitTunneling: true };
+        const {domain, user, password, ...psOptions} = allOptions;
         try {
             await psExec("Remove-VpnConnection", { name: options.name, force: true });
         } catch (err) {

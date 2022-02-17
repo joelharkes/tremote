@@ -21,9 +21,6 @@ import { VpnProcess } from "./vpnprocess-base";
 
 // const remote = require('../actions/remote');
 // const windowsvpn = require('../actions/windowsvpn');
-var APP_READY = new Promise((resolve) => {
-    app.on("ready", (info) => resolve(info));
-});
 
 var actions = {
     ciscovpn: CiscoVpnAction,
@@ -152,7 +149,7 @@ export class RemoteApp implements RemoteAppInterface {
             return this.window;
         }
         var x = new RemoteResponder<RemoteAppInterface>(this);
-        await APP_READY;
+        await app.whenReady();
         const win = new BrowserWindow({
             width: 1240,
             height: 1080,

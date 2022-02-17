@@ -1,4 +1,5 @@
 import * as winston from "winston";
+import * as Transport from 'winston-transport';
 import * as stream from "stream";
 import * as os from "os";
 import * as path from "path";
@@ -26,7 +27,7 @@ class LogRotator extends stream.Writable {
 
 export const MemLog = new LogRotator();
 
-var transports = new Array<winston.TransportInstance>();
+var transports = new Array<Transport>();
 if (isDevelopment() || process.env.NODE_ENV === "development") {
   transports.push(new winston.transports.Console());
 }
@@ -35,7 +36,7 @@ if (!isDevelopment()) {
 }
 transports.push(new (winston.transports as any).Stream({ stream: MemLog }));
 
-export const logger = (winston as any).createLogger({
+export const logger = winston.createLogger({
   level: "debug",
   transports
-}) as winston.LoggerInstance;
+}) as winston.Logger;

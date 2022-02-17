@@ -47,7 +47,7 @@ export class CiscoVpnProcess extends VpnProcessBase {
         this.info.name = "Cisco VPN";
         const proc = this.proc as cmd.ChildProcess;
         (proc.stdin as any).setEncoding("utf8");
-        proc.stdin.write(script);
+        proc.stdin?.write(script);
     }
 
     detectVpnConnected(newLines: string[]): VpnStatus | null {
