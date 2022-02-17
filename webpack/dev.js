@@ -22,14 +22,8 @@ module.exports = merge(commonConfig, {
     port: port,
     historyApiFallback: true,
   },
-  
-  externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM',
-    'mobx': "mobx",
-    'mobx-react': "mobxReact"
-  },
+
   plugins: [
-    new HtmlWebpackPlugin({ template: 'index.dev.html.ejs', }),
+    new HtmlWebpackPlugin({ template: 'index.html.ejs', }),
   ],
 });

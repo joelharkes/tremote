@@ -14,7 +14,7 @@
     "package": "electron-builder",
     "no-pack": "electron-builder --dir -c.compression=store",
     "prod": "npm run build && npm run no-pack && dist/win-unpacked/tremote.exe",
-    "dist": "npm run compile && electron-builder --dir"
+    "dist": "npm run build && electron-builder --dir"
   },
   "keywords": [],
   "license": "MIT",
